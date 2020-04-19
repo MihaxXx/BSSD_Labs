@@ -1,6 +1,6 @@
 # BSSD_Lab1
 
-##Usage
+## Usage
 
 Check if running on macOS
 `lsof -nP -iTCP:5000 | grep LISTEN`
