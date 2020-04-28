@@ -19,12 +19,12 @@ string urlDecode(string str);
 
 int main()
 {
-    cout << "Content-Type: text/html; charset=utf-8\n";
-
     string std_in;
     cin >> std_in;
     string queryString = string(getenv("QUERY_STRING"));
     string httpCookie = string(getenv("HTTP_COOKIE"));
+
+    cout << "Content-Type: text/html; charset=utf-8\n";
 
     int _find_c;
     string check;
@@ -76,51 +76,50 @@ int main()
     cout << "<body>\n";
     {//Формы
         cout << "<h3>Unsafe form</h3>"
-                "<form  method=\"POST\" action=\"bssd_L3T2.cgi\">\n"
-                "Сумма <INPUT SIZE=50 TYPE=text NAME=sum>\n"
-                "Счёт <INPUT SIZE=50 TYPE=text NAME=target>\n"
-                "<br> <br>\n"
+                "<form  method=\"POST\" action=\"bssd_L3T2.cgi\">"
+                "Сумма <INPUT SIZE=50 TYPE=text NAME=sum><br>"
+                "Счёт_. <INPUT SIZE=50 TYPE=text NAME=target><br>"
                 "<INPUT TYPE=submit VALUE=\"OK\">\n"
-                "</FORM>";
+                "</FORM>\n";
         cout << "<h3>Safe form</h3>"
-                "<form  method=\"POST\" action=\"bssd_L3T2.cgi\">\n"
-                "Сумма <INPUT SIZE=50 TYPE=text NAME=sum_s>\n"
-                "Счёт <INPUT SIZE=50 TYPE=text NAME=target_s>\n"
+                "<form  method=\"POST\" action=\"bssd_L3T2.cgi\">"
+                "Сумма <INPUT SIZE=50 TYPE=text NAME=sum_s><br>"
+                "Счёт_. <INPUT SIZE=50 TYPE=text NAME=target_s><br>"
                 "<input type=hidden name=token value=" << check << ">";
-        cout << "<br> <br>\n"
-                "<INPUT TYPE=submit VALUE=\"OK\">\n"
-                "</FORM>";
+        cout << "<INPUT TYPE=submit VALUE=\"OK\">\n"
+                "</FORM>\n"
+                "<br>";
     }
-    if (_find1 == string::npos || _find1_s == string::npos)
+    if (_find1 != string::npos || _find1_s != string::npos)
     {
-        if (_find1 == string::npos)
+        if (_find1 != string::npos)
         {
             text1 = urlDecode(
-                    std_in.substr(_find1 + param1.length(), std_in.find(';', _find1) - _find1 - param1.length()));
+                    std_in.substr(_find1 + param1.length(), std_in.find('&', _find1) - _find1 - param1.length()));
             text2 = urlDecode(
-                    std_in.substr(_find2 + param2.length(), std_in.find(';', _find2) - _find2 - param2.length()));
+                    std_in.substr(_find2 + param2.length(), std_in.find('&', _find2) - _find2 - param2.length()));
 
             // Запись данных форм в файл
             std::ofstream out;          // поток для записи
             out.open("form1.txt"); // окрываем файл для записи
             if (out.is_open())
             {
-                out << text1 << std::endl
-                    << text2 << std::endl;
+                out << param1 << text1 << std::endl
+                    << param2 << text2 << std::endl;
             }
             out.close();
         }
-        if (_find1_s == string::npos)
+        if (_find1_s != string::npos)
         {
             text1_s = urlDecode(
                     std_in.substr(_find1_s + param1_s.length(),
-                                  std_in.find(';', _find1_s) - _find1_s - param1_s.length()));
+                                  std_in.find('&', _find1_s) - _find1_s - param1_s.length()));
             text2_s = urlDecode(
                     std_in.substr(_find2_s + param2_s.length(),
-                                  std_in.find(';', _find2_s) - _find2_s - param2_s.length()));
+                                  std_in.find('&', _find2_s) - _find2_s - param2_s.length()));
             text3_s = urlDecode(
                     std_in.substr(_find3_s + param3_s.length(),
-                                  std_in.find(';', _find3_s) - _find3_s - param3_s.length()));
+                                  std_in.find('&', _find3_s) - _find3_s - param3_s.length()));
 
             // Запись данных форм в файл
             std::ofstream out;          // поток для записи
@@ -129,13 +128,46 @@ int main()
                 out.open("form2.txt"); // окрываем файл для записи
                 if (out.is_open())
                 {
-                    out << text1_s << std::endl
-                        << text2_s << std::endl
-                        << text3_s << std::endl;
+                    out << param1_s << text1_s << std::endl
+                        << param2_s << text2_s << std::endl
+                        << param3_s << text3_s << std::endl;
                 }
                 out.close();
             }
         }
+    }
+
+    {//Вывод сохраннённых данных
+        std::string line;
+
+        cout << "<h4>Form 1 data</h4>";
+        std::ifstream in("form1.txt"); // окрываем файл для чтения
+        if (in.is_open())
+        {
+            while (getline(in, line))
+            {
+                XML_encode(line);
+                std::cout << line << "<br>";
+            }
+        }
+        else
+            cout << "Not found" << "<br>";
+        in.close();     // закрываем файл
+        cout << "<br>\n";
+
+        cout << "<h4>Form 2 data</h4>";
+        in.open("form2.txt");
+        if (in.is_open())
+        {
+            while (getline(in, line))
+            {
+                XML_encode(line);
+                std::cout << line << "<br>";
+            }
+        }
+        else
+            cout << "Not found" << "<br>";
+
     }
 
 /*    cout << "<h3>Значение поля text без экранирования</h3>";
