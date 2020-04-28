@@ -12,20 +12,21 @@
 using namespace std;
 
 std::vector<std::string> split(const std::string &s, char delimiter);
-
 void XML_encode(std::string &data);
-
 string urlDecode(string str);
 
 int main()
 {
+    ///Read POST from form
     string std_in;
     cin >> std_in;
+    ///Read queryString and httpCookie
     string queryString = string(getenv("QUERY_STRING"));
     string httpCookie = string(getenv("HTTP_COOKIE"));
 
     cout << "Content-Type: text/html; charset=utf-8\n";
 
+    ///Read or create cookie token
     int _find_c;
     string check;
     const string param_c = "check=";
@@ -53,17 +54,9 @@ int main()
     }
     cout << "\n";
 
-    const string param1 = "sum=";
-    const string param2 = "target=";
-    const string param1_s = "sum_s=";
-    const string param2_s = "target_s=";
-    const string param3_s = "token=";
-    int _find1 = std_in.find(param1), _find2 = std_in.find(param2);
-    int _find1_s = std_in.find(param1_s), _find2_s = std_in.find(param2_s);
-    int _find3_s = std_in.find(param3_s);
-
     string text1, text2, text1_s, text2_s, text3_s;
 
+    ///Generate page
     {//Заголовок
         cout << "<html>\n<head>\n<title>BSSD_Lab3</title>\n "
                 "<script type=\"text/javascript\">\n"
@@ -90,8 +83,20 @@ int main()
                 "</FORM>\n"
                 "<br>";
     }
+
+    ///Dirty parse from POST
+    const string param1 = "sum=";
+    const string param2 = "target=";
+    const string param1_s = "sum_s=";
+    const string param2_s = "target_s=";
+    const string param3_s = "token=";
+    int _find1 = std_in.find(param1), _find2 = std_in.find(param2);
+    int _find1_s = std_in.find(param1_s), _find2_s = std_in.find(param2_s);
+    int _find3_s = std_in.find(param3_s);
+
     if (_find1 != string::npos || _find1_s != string::npos)
     {
+        ///Parse unsafe form from POST
         if (_find1 != string::npos)
         {
             text1 = urlDecode(
@@ -109,6 +114,7 @@ int main()
             }
             out.close();
         }
+        ///Parse safe form from POST
         if (_find1_s != string::npos)
         {
             text1_s = urlDecode(
@@ -169,13 +175,6 @@ int main()
             cout << "Not found" << "<br>";
 
     }
-
-/*    cout << "<h3>Значение поля text без экранирования</h3>";
-    cout << text << "<br>";
-    cout << "<h3>Значение поля text с экранированием</h3>";
-    XML_encode(text);
-    cout << text << "<br>";*/
-
 
     cout << "</body>\n</html>";
     return 0;
