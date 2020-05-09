@@ -9,6 +9,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+using BSSD_Lab4.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace BSSD_Lab4
 {
     public class Startup
@@ -25,8 +28,8 @@ namespace BSSD_Lab4
         {
             services.AddRazorPages();
 
-        /*    services.AddDbContext<RazorPagesMovieContext>(options =>
-        options.UseSqlite(Configuration.GetConnectionString("MovieContext")));*/
+            services.AddDbContext<UserContext>(options =>
+                options.UseSqlite(Configuration.GetConnectionString("UserContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

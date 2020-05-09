@@ -21,4 +21,9 @@
     <Folder Include="Models\" />
     <Folder Include="Data\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="Lab4Users.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
