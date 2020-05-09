@@ -1,0 +1,23 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+<form>
+    <p>
+        Login: <input type="text" asp-for="Login" />
+    </p>
+    <p>
+        Password: <input type="password" asp-for="Pass" />
+    </p>
+    <p>
+        <input type="submit" value="Log in" />
+    </p>
+</form>
+
+
