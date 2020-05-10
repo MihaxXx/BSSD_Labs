@@ -33,7 +33,7 @@ namespace BSSD_Lab5
 
         static void ProcessCommand(string command)
         {
-            var input = command.Split(' ', ':');
+            var input = command.Split(' ', ':').Where(s => s!= " ").ToArray();
             if (input[0] == string.Empty) return;
             switch (input[0])
             {
